@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,13 +22,13 @@ fun Ship(shipData: ShipData) {
         Modifier
             .offset(shipData.position.x.dp - (shipSize / 2), shipData.position.y.dp - (shipSize / 2))
             .size(shipSize)
-            .rotate(shipData.angle.toFloat())
+            .rotate(shipData.visualAngle.toFloat())
             .clip(CircleShape)
-            .background(Color.Red)
+            .background(Color.Black)
     ) {
         Canvas(modifier = Modifier.fillMaxSize(), onDraw = {
             drawPath(
-                color = Color.Green,
+                color = Color.White,
                 path = Path().apply {
                     val size = shipSize.toPx()
                     // Moves to top left position

@@ -6,10 +6,11 @@ import org.openrndr.math.mod
 
 class ShipData : GameObject() {
     override var size: Double = 40.0
+    var visualAngle: Double = 0.0
 
     fun fire(game: Game) {
         val ship = this
-        game.gameObjects.add(BulletData(ship.speed * 4.0, ship.angle, ship.position))
+        game.gameObjects.add(BulletData(ship.speed * 4.0, ship.visualAngle, ship.position))
     }
 }
 
@@ -27,6 +28,11 @@ sealed class GameObject(speed: Double = 0.0, angle: Double = 0.0, position: Vect
     var speed by mutableStateOf(speed)
     var angle by mutableStateOf(angle)
     var position by mutableStateOf(position)
+    var movementVector get() = (Vector2.UNIT_X * speed).rotate(angle)
+    set(value) {
+        speed = value.length
+        angle = value.angle()
+    }
     abstract val size: Double // Diameter
 
     fun update(realDelta: Float, game: Game) {

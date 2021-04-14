@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -15,8 +16,9 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 
-fun main() = Window(size = IntSize(800, 900)) {
+fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
     val game = remember { Game() }
     val density = LocalDensity.current
     LaunchedEffect(Unit) {
@@ -27,33 +29,18 @@ fun main() = Window(size = IntSize(800, 900)) {
         }
     }
 
-    Column {
-        Row {
-            Button({
-                game.ship.speed += 1
-            }) {
-                Text("Forward")
-            }
-            Button({
-                game.ship.angle += 30
-            }) {
-                Text("Right")
-            }
-            Button({
-                game.ship.fire(game)
-            }) {
-                Text("Fire")
-            }
+    Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Button({
                 game.startGame()
             }) {
                 Text("Play")
             }
-            Text(game.gameStatus)
+            Text(game.gameStatus, modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp), color = Color.White)
         }
         Box(modifier = Modifier
             .aspectRatio(1.0f)
-            .background(Color.DarkGray)
+            .background(Color(0, 0, 30))
             .fillMaxWidth()
             .fillMaxHeight()
         ) {

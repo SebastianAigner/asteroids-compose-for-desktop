@@ -19,6 +19,6 @@ fun Bullet(bulletData: BulletData) {
             .size(bulletSize)
             .rotate(bulletData.angle.toFloat())
             .clip(CircleShape)
-            .background(Color.Green)
+            .background(Color.Cyan)
     )
 }

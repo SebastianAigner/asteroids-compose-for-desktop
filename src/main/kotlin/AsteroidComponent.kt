@@ -19,6 +19,6 @@ fun Asteroid(asteroid: Asteroid) {
             .size(asteroidSize)
             .rotate(asteroid.angle.toFloat())
             .clip(CircleShape)
-            .background(Color.Yellow)
+            .background(Color(102, 102, 153))
     )
 }

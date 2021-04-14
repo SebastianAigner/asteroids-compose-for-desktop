@@ -15,6 +15,11 @@ enum class GameState {
     STOPPED, RUNNING
 }
 
+fun Vector2.angle(): Double {
+    val rawAngle = atan2(y = this.y, x = this.x)
+    return (rawAngle / Math.PI) * 180
+}
+
 class Game {
     var prevTime = 0L
     val ship = ShipData()
@@ -28,6 +33,7 @@ class Game {
     fun startGame() {
         gameObjects.clear()
         ship.position = Vector2(width.value / 2.0, height.value / 2.0)
+        ship.movementVector = Vector2.ZERO
         gameObjects.add(ship)
         repeat(3) {
             gameObjects.add(Asteroid().apply {
@@ -39,15 +45,18 @@ class Game {
     }
 
     fun update(time: Long) {
-        if (gameState == GameState.STOPPED) return
         val delta = time - prevTime
         val floatDelta = (delta / 1E8).toFloat()
         prevTime = time
 
+        if (gameState == GameState.STOPPED) return
+
         val cursorVector = Vector2(targetLocation.x.value.toDouble(), targetLocation.y.value.toDouble())
         val shipToCursor = cursorVector.minus(ship.position)
         val angle = atan2(y = shipToCursor.y, x = shipToCursor.x)
-        ship.angle = (angle / Math.PI) * 180
+
+        ship.visualAngle = (angle / Math.PI) * 180
+        ship.movementVector = ship.movementVector + (shipToCursor.normalized * floatDelta.toDouble())
         // Update game object positions
         for (go in gameObjects) {
             go.update(floatDelta, this)
@@ -55,6 +64,9 @@ class Game {
 
         // Bullet <-> Asteroid interaction
         val bullets = gameObjects.filterIsInstance<BulletData>()
+        if(bullets.count() > 3) {
+            gameObjects.remove(bullets.first())
+        }
         val asteroids = gameObjects.filterIsInstance<Asteroid>()
         asteroids.forEach { asteroid ->
             val least = bullets.firstOrNull { it.overlapsWith(asteroid) } ?: return@forEach
