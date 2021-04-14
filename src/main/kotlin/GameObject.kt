@@ -36,12 +36,10 @@ sealed class GameObject(speed: Double = 0.0, angle: Double = 0.0, position: Vect
     abstract val size: Double // Diameter
 
     fun update(realDelta: Float, game: Game) {
-        val gmobj = this
-        val velocity = Vector2(gmobj.speed * realDelta, 0.0).rotate(gmobj.angle)
-
-        gmobj.position += velocity
-
-        gmobj.position = gmobj.position.mod(Vector2(game.width.value.toDouble(), game.height.value.toDouble()))
+        val obj = this
+        val velocity = movementVector * realDelta.toDouble()
+        obj.position += velocity
+        obj.position = obj.position.mod(Vector2(game.width.value.toDouble(), game.height.value.toDouble()))
     }
 
     fun overlapsWith(other: GameObject): Boolean {

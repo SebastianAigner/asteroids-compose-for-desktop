@@ -2,13 +2,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import org.openrndr.math.Vector2
-import java.lang.Math.acos
 import kotlin.math.atan2
-import kotlin.math.atanh
 import kotlin.random.Random
 
 enum class GameState {
@@ -52,22 +49,26 @@ class Game {
         if (gameState == GameState.STOPPED) return
 
         val cursorVector = Vector2(targetLocation.x.value.toDouble(), targetLocation.y.value.toDouble())
-        val shipToCursor = cursorVector.minus(ship.position)
+        val shipToCursor = cursorVector - ship.position
         val angle = atan2(y = shipToCursor.y, x = shipToCursor.x)
 
-        ship.visualAngle = (angle / Math.PI) * 180
+        ship.visualAngle = shipToCursor.angle()
         ship.movementVector = ship.movementVector + (shipToCursor.normalized * floatDelta.toDouble())
-        // Update game object positions
-        for (go in gameObjects) {
-            go.update(floatDelta, this)
+
+        for (gameObject in gameObjects) {
+            gameObject.update(floatDelta, this)
         }
 
-        // Bullet <-> Asteroid interaction
+
         val bullets = gameObjects.filterIsInstance<BulletData>()
-        if(bullets.count() > 3) {
+
+        // Limit number of bullets at the same time
+        if (bullets.count() > 3) {
             gameObjects.remove(bullets.first())
         }
         val asteroids = gameObjects.filterIsInstance<Asteroid>()
+
+        // Bullet <-> Asteroid interaction
         asteroids.forEach { asteroid ->
             val least = bullets.firstOrNull { it.overlapsWith(asteroid) } ?: return@forEach
             if (asteroid.position.distanceTo(least.position) < asteroid.size) {

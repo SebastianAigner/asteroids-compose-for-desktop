@@ -1,6 +1,6 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -70,7 +70,6 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                         is Asteroid -> Asteroid(it)
                     }
                 }
-                Ship(game.ship)
             }
         }
     }
