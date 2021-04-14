@@ -9,8 +9,10 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
 
 fun main() = Window(size = IntSize(800, 900)) {
@@ -59,6 +61,12 @@ fun main() = Window(size = IntSize(800, 900)) {
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .clipToBounds()
+                .pointerMoveFilter(onMove = {
+                    with(density) {
+                        game.targetLocation  = DpOffset(it.x.toDp(), it.y.toDp())
+                    }
+                    false
+                })
                 .onSizeChanged {
                     with(density) {
                         game.width = it.width.toDp()

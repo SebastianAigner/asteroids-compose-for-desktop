@@ -2,8 +2,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import org.openrndr.math.Vector2
+import java.lang.Math.acos
+import kotlin.math.atan2
+import kotlin.math.atanh
 import kotlin.random.Random
 
 enum class GameState {
@@ -13,6 +18,8 @@ enum class GameState {
 class Game {
     var prevTime = 0L
     val ship = ShipData()
+
+    var targetLocation by mutableStateOf<DpOffset>(DpOffset.Zero)
 
     var gameObjects = mutableStateListOf<GameObject>()
     var gameState by mutableStateOf(GameState.RUNNING)
@@ -37,6 +44,10 @@ class Game {
         val floatDelta = (delta / 1E8).toFloat()
         prevTime = time
 
+        val cursorVector = Vector2(targetLocation.x.value.toDouble(), targetLocation.y.value.toDouble())
+        val shipToCursor = cursorVector.minus(ship.position)
+        val angle = atan2(y = shipToCursor.y, x = shipToCursor.x)
+        ship.angle = (angle / Math.PI) * 180
         // Update game object positions
         for (go in gameObjects) {
             go.update(floatDelta, this)
