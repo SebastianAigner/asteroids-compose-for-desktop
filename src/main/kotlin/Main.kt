@@ -1,5 +1,6 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -18,7 +19,6 @@ import androidx.compose.ui.unit.IntSize
 fun main() = Window(size = IntSize(800, 900)) {
     val game = remember { Game() }
     val density = LocalDensity.current
-
     LaunchedEffect(Unit) {
         while (true) {
             withFrameNanos {
@@ -67,6 +67,9 @@ fun main() = Window(size = IntSize(800, 900)) {
                     }
                     false
                 })
+                .clickable() {
+                    game.ship.fire(game)
+                }
                 .onSizeChanged {
                     with(density) {
                         game.width = it.width.toDp()
