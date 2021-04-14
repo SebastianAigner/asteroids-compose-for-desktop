@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -57,6 +58,7 @@ fun main() = Window(size = IntSize(800, 900)) {
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .clipToBounds()
                 .onSizeChanged {
                     with(density) {
                         game.width = it.width.toDp()
