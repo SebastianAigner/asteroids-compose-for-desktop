@@ -33,7 +33,7 @@ class Game {
         ship.movementVector = Vector2.ZERO
         gameObjects.add(ship)
         repeat(3) {
-            gameObjects.add(Asteroid().apply {
+            gameObjects.add(AsteroidData().apply {
                 position = Vector2(100.0, 100.0); angle = Random.nextDouble() * 360.0; speed = 2.0
             })
         }
@@ -66,7 +66,7 @@ class Game {
         if (bullets.count() > 3) {
             gameObjects.remove(bullets.first())
         }
-        val asteroids = gameObjects.filterIsInstance<Asteroid>()
+        val asteroids = gameObjects.filterIsInstance<AsteroidData>()
 
         // Bullet <-> Asteroid interaction
         asteroids.forEach { asteroid ->
@@ -78,7 +78,9 @@ class Game {
                 if (asteroid.size < 50.0) return@forEach
                 // it's still pretty big, let's spawn some smaller ones
                 repeat(2) {
-                    gameObjects.add(Asteroid(asteroid.speed * 2, Random.nextDouble() * 360.0, asteroid.position).apply {
+                    gameObjects.add(AsteroidData(asteroid.speed * 2,
+                        Random.nextDouble() * 360.0,
+                        asteroid.position).apply {
                         size = asteroid.size / 2
                     })
                 }

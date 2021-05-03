@@ -67,7 +67,7 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                     when (it) {
                         is ShipData -> Ship(it)
                         is BulletData -> Bullet(it)
-                        is Asteroid -> Asteroid(it)
+                        is AsteroidData -> Asteroid(it)
                     }
                 }
             }
