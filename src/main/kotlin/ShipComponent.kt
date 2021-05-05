@@ -10,9 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,7 +18,7 @@ fun Ship(shipData: ShipData) {
     val shipSize = shipData.size.dp
     Box(
         Modifier
-            .offset(shipData.position.x.dp - (shipSize / 2), shipData.position.y.dp - (shipSize / 2))
+            .offset(shipData.xOffset, shipData.yOffset)
             .size(shipSize)
             .rotate(shipData.visualAngle.toFloat())
             .clip(CircleShape)
@@ -31,12 +29,9 @@ fun Ship(shipData: ShipData) {
                 color = Color.White,
                 path = Path().apply {
                     val size = shipSize.toPx()
-                    // Moves to top left position
-                    moveTo(0f, 0f)
-                    // Add line to right center
-                    lineTo(size, size / 2f)
-                    // Add line to bottom left corner
-                    lineTo(0f, size)
+                    moveTo(0f, 0f) // Top-left corner...
+                    lineTo(size, size / 2f) // ...to right-center...
+                    lineTo(0f, size) // ... to bottom-left corner.
                 }
             )
         })

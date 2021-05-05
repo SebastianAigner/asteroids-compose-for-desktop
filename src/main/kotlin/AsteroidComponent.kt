@@ -15,7 +15,7 @@ fun Asteroid(asteroidData: AsteroidData) {
     val asteroidSize = asteroidData.size.dp
     Box(
         Modifier
-            .offset(asteroidData.position.x.dp - (asteroidSize / 2), asteroidData.position.y.dp - (asteroidSize / 2))
+            .offset(asteroidData.xOffset, asteroidData.yOffset)
             .size(asteroidSize)
             .rotate(asteroidData.angle.toFloat())
             .clip(CircleShape)

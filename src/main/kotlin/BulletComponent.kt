@@ -15,7 +15,7 @@ fun Bullet(bulletData: BulletData) {
     val bulletSize = bulletData.size.dp
     Box(
         Modifier
-            .offset(bulletData.position.x.dp - (bulletSize / 2), bulletData.position.y.dp - (bulletSize / 2))
+            .offset(bulletData.xOffset, bulletData.yOffset)
             .size(bulletSize)
             .rotate(bulletData.angle.toFloat())
             .clip(CircleShape)
