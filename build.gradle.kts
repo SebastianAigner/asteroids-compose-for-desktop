@@ -1,37 +1,17 @@
-import org.jetbrains.compose.compose
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "1.4.31"
-    id("org.jetbrains.compose") version "0.3.2"
+    id("com.android.application").version("7.4.0-beta02").apply(false)
+    id("com.android.library").version("7.4.0-beta02").apply(false)
+    id("org.jetbrains.compose").version("1.3.0") apply false
+    kotlin("android").version("1.8.0").apply(false)
+    kotlin("multiplatform").version("1.8.0").apply(false)
+    kotlin("jvm") apply false
 }
 
-group = "me.user"
-version = "1.0"
-
-repositories {
-    jcenter()
-    mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-}
-
-dependencies {
-    implementation(compose.desktop.currentOs)
-    implementation("org.openrndr:openrndr-math:0.3.47")
-}
-
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
-}
-
-compose.desktop {
-    application {
-        mainClass = "MainKt"
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "asteroids-for-desktop"
-            packageVersion = "1.0.0"
-        }
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        mavenLocal()
     }
 }
